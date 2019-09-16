@@ -1,0 +1,1 @@
+'use strict';Object.defineProperty(exports,'__esModule',{value:!0});var _package=require('../package.json');exports.default='Hello Node from '+_package.author,module.exports=exports.default;
