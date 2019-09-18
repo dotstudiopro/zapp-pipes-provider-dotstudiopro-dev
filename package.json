@@ -1,5 +1,5 @@
 {
-  "name": "zapp-pipes-provider-dotstudiopro",
+  "name": "@dotstudiopro/zapp-pipes-provider-dotstudiopro",
   "version": "1.0.0",
   "description": "Zapp Provider for Applicaster platform by dotstudioPRO",
   "main": "dist/index.js",
@@ -9,8 +9,77 @@
     "lint": "eslint --fix src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "url": "git+ssh://git@github.com/dotstudiopro/zapp-pipes-provider-dotstudiopro.git",
+    "type": "git"
+  },
   "author": "dotstudioPRO",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dotstudiopro/zapp-pipes-provider-dotstudiopro/issues"
+  },
+  "homepage": "https://github.com/dotstudiopro/zapp-pipes-provider-dotstudiopro#readme",
+  "type": "data_source_provider",
+  "identifier": "dotstudioPRO",
+  "ui_builder_support": true,
+  "dependency_name": "dotstudioPRO",
+  "dependency_version": "0.1.0",
+  "min_zapp_sdk": "10.0.9",
+  "deprecated_since_zapp_sdk": "",
+  "unsupported_since_zapp_sdk": "",
+  "scheme": "dotstudiopro",
+  "data_types": [
+    {
+      "label": "category",
+      "value": "string",
+      "documentation": {
+        "link": "https://api.myspotlight.tv/#tag/category",
+        "input_description": "Category Slug",
+        "input_placeholder": "Please type the category slug",
+        "input_description_image_url": ""
+      }
+    },
+    {
+      "label": "channel",
+      "value": "string",
+      "documentation": {
+        "link": "https://api.myspotlight.tv/#tag/channel",
+        "input_description": "Channel Slug",
+        "input_placeholder": "Please type the channel slug",
+        "input_description_image_url": ""
+      }
+    },
+    {
+      "label": "video",
+      "value": "string",
+      "documentation": {
+        "link": "https://api.myspotlight.tv/#tag/video",
+        "input_description": "Video ID",
+        "input_placeholder": "Please type the Video ID",
+        "input_description_image_url": ""
+      }
+    },
+    {
+      "label": "https://api.myspotlight.tv/#tag/playlist",
+      "value": "string",
+      "documentation": {
+        "link": "https://api.myspotlight.tv/#tag/playlist",
+        "input_description": "Playlist ID",
+        "input_placeholder": "Please type the Playlist ID",
+        "input_description_image_url": ""
+      }
+    },
+    {
+      "label": "vmap",
+      "value": "string",
+      "documentation": {
+        "link": "https://api.myspotlight.tv/#tag/vmap",
+        "input_description": "VMAP URL",
+        "input_placeholder": "Please add the video ID to get VMAP",
+        "input_description_image_url": ""
+      }
+    }
+  ],
   "files": [
     "dist"
   ],
@@ -35,6 +104,7 @@
     "standard",
     "promise"
   ],
+  "dependencies": {},
   "devDependencies": {
     "babel-eslint": "^10.0.3",
     "babel-plugin-add-module-exports": "^1.0.2",
