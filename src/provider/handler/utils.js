@@ -13,8 +13,8 @@ var authenticate = function(nativeBridge, api_key) {
     const cdn = JSON.parse(nativeBridge.getLocalStoreItem("cdn", "dotstudiopro"));
 
     // if we have a token check to make sure it's not expired first
-    if (token && token.length && expiry && expiry.length) {
-      var decoded = jwt.decode(response.data.token);
+    if (token && token.length && expires && expires.length) {
+      var decoded = jwt.decode(token);
       var now = moment();
 
       if (now > decoded.expires) {

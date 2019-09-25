@@ -2,7 +2,6 @@ import axios from 'axios';
 
 export default (params) => {
   const { token } = params;
-  console.log("CATEGORY PARAMS ", params);
   const url = `https://api.myspotlight.tv/categories/US?platform=applicaster&token=${token}`;
   return axios.get(url).then(handleCategoriesResponse).catch(e => Promise.reject());
 };

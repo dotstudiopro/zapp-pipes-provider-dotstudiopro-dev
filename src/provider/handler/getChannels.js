@@ -7,12 +7,11 @@ export default (params) => {
   .then((response) => {
     return handleChannelsResponse(response.data, category);
   })
-  .catch(e => Promise.reject());
+  .catch(e => Promise.reject(e));
 };
 
 function handleChannelsResponse(response, category) {
-  const rawData = response.data.channels;
-  const channels = rawData.map(channel => {
+  const channels = response.channels.map(channel => {
 
     if (channel.childchannels.length) {
       // case 1 - parent so need to get children individually
