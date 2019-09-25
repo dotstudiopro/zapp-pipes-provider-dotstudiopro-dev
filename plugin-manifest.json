@@ -1,20 +1,21 @@
 {
   "api": {},
   "platform": null,
-  "author": "dotstudioPRO",
-  "bugs": {
-    "url": "https://github.com/dotstudiopro/zapp-pipes-provider-dotstudiopro/issues"
-  },
-  "homepage": "https://github.com/dotstudiopro/zapp-pipes-provider-dotstudiopro#readme",
+  "author_name": "dotstudiopro",
   "author_email": "matt@dotstudioz.com",
-  "manifest_version": "0.3.0",
-  "name": "@dotstudiopro/zapp-pipes-provider-dotstudiopro",
+  "manifest_version": "0.4.0",
+  "name": "dotstudioPRO Applicaster Provider",
+  "dependency_name": "@dotstudiopro/zapp-pipes-provider-dotstudiopro",
+  "dependency_version": "0.4.0",
+  "dependency_repository_url": [
+    "https://github.com/dotstudiopro/zapp-pipes-provider-dotstudiopro"
+  ],
   "description": "Zapp Provider for Applicaster platform by dotstudioPRO",
   "type": "data_source_provider",
   "identifier": "dotstudiopro",
   "ui_builder_support": true,
   "whitelisted_account_ids": [ "5d812bbb7b81ea000e1168de" ],
-  "min_zapp_sdk": "10.0.9",
+  "min_zapp_sdk": "4.0.0",
   "deprecated_since_zapp_sdk": "",
   "unsupported_since_zapp_sdk": "",
   "scheme": "dotstudiopro",  
