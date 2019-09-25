@@ -1,5 +1,3 @@
-'use strict'
+import provider from './provider';
 
-import { author } from '../package.json'
-
-export default `Hello Node from ${author}`
+module.exports = provider;

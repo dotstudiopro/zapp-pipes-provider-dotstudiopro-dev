@@ -1,0 +1,58 @@
+{
+  "api": {},
+  "platform": null,
+  "author": "dotstudioPRO",
+  "bugs": {
+    "url": "https://github.com/dotstudiopro/zapp-pipes-provider-dotstudiopro/issues"
+  },
+  "homepage": "https://github.com/dotstudiopro/zapp-pipes-provider-dotstudiopro#readme",
+  "author_email": "matt@dotstudioz.com",
+  "manifest_version": "0.1.0",
+  "name": "@dotstudiopro/zapp-pipes-provider-dotstudiopro",
+  "description": "Zapp Provider for Applicaster platform by dotstudioPRO",
+  "type": "data_source_provider",
+  "identifier": "dotstudiopro",
+  "ui_builder_support": true,
+  "dependency_name": "@applicaster/zapp-pipes-provider-maccabi",
+  "dependency_version": "0.1.0",
+  "dependency_repository_url": [
+    "https://github.com/applicaster/zapp-pipes-provider-maccabi"
+  ],
+  "whitelisted_account_ids": [],
+  "min_zapp_sdk": "10.0.9",
+  "deprecated_since_zapp_sdk": "",
+  "unsupported_since_zapp_sdk": "",
+  "scheme": "dotstudiopro",  
+  "data_types": [
+    {
+      "label": "category",
+      "value": "string",
+      "documentation": {
+        "link": "https://api.myspotlight.tv/#tag/category",
+        "input_description": "Category Slug",
+        "input_placeholder": "Please type the category slug",
+        "input_description_image_url": ""
+      }
+    },
+    {
+      "label": "channel",
+      "value": "string",
+      "documentation": {
+        "link": "https://api.myspotlight.tv/#tag/channel",
+        "input_description": "Channel Slug",
+        "input_placeholder": "Please type the channel slug",
+        "input_description_image_url": ""
+      }
+    },
+    {
+      "label": "video",
+      "value": "string",
+      "documentation": {
+        "link": "https://api.myspotlight.tv/#tag/video",
+        "input_description": "Video ID",
+        "input_placeholder": "Please type the Video ID",
+        "input_description_image_url": ""
+      }
+    }
+  ]
+}
