@@ -6,7 +6,7 @@
   "manifest_version": "0.6.0",
   "name": "dotstudioPRO Applicaster Provider",
   "dependency_name": "@dotstudiopro/zapp-pipes-provider-dotstudiopro",
-  "dependency_version": "0.6.0",
+  "dependency_version": "0.7.0",
   "dependency_repository_url": [
     "https://github.com/dotstudiopro/zapp-pipes-provider-dotstudiopro"
   ],

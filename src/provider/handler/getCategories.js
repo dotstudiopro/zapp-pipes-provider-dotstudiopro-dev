@@ -22,7 +22,7 @@ function handleCategoriesResponse(response) {
 function parseCategory(category) {
   const { _id, name, slug } = category;
 
-  return {
+  const returnObj = {
     type: {
       value: 'feed'
     },
@@ -35,5 +35,20 @@ function parseCategory(category) {
       rel: 'self',
       src: `dotstudiopro://fetchData?type=channels&category=${slug}` //formatted url to retrieve this category's channels inside the Zapp app
     }
-  };
+  }
+
+  if (category.image && category.image.poster){
+    returnObj.media_group[0] = {
+      "type": "image",
+      "media_item": [
+        {
+          "type": "image",
+          "key": "thumbnail",
+          "src": category.image.poster
+        }
+      ]
+    }
+  }
+
+  return returnObj;
 }

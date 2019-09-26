@@ -16,6 +16,13 @@ export const handler = nativeBridge => params => {
         .then(authObj => {
           params.token = authObj.token;
           params.cdn = authObj.cdn;
+
+          const appData = nativeBridge.appData();
+          params.deviceWidth = appData.deviceWidth;
+          params.deviceHeight = appData.deviceHeight;
+          params.platform = appData.platform;
+          params.device_ifa = appData.advertisingIdentifier;
+
           return commands[type](params)
             .then(nativeBridge.sendResponse)
             .catch(nativeBridge.throwError);
@@ -31,6 +38,12 @@ export const handler = nativeBridge => params => {
       .then(authObj => {
         params.token = authObj.token;
         params.cdn = authObj.cdn;
+
+        params.deviceWidth = "1920";
+        params.deviceHeight = "1080";
+        params.platform = "android";
+        params.device_ifa = "38400000-8cf0-11bd-b23e-10b96e40000d";
+
         return commands[type](params)
           .then(nativeBridge.sendResponse)
           .catch(nativeBridge.throwError);
