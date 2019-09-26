@@ -3,7 +3,7 @@
   "platform": null,
   "author_name": "dotstudiopro",
   "author_email": "matt@dotstudioz.com",
-  "manifest_version": "0.6.0",
+  "manifest_version": "0.8.0",
   "name": "dotstudioPRO Applicaster Provider",
   "dependency_name": "@dotstudiopro/zapp-pipes-provider-dotstudiopro",
   "dependency_version": "0.7.0",
@@ -28,32 +28,42 @@
   ], 
   "data_types": [
     {
-      "label": "category",
-      "value": "string",
+      "label": "categories",
+      "value": "categories",
       "documentation": {
         "link": "https://api.myspotlight.tv/#tag/category",
+        "input_description": "get category list",
+        "input_placeholder": "",
+        "input_description_image_url": ""
+      }
+    },
+    {
+      "label": "channels",
+      "value": "channels",
+      "documentation": {
+        "link": "https://api.myspotlight.tv/#tag/channel",
         "input_description": "Category Slug",
-        "input_placeholder": "Please type the category slug",
+        "input_placeholder": "my-category",
         "input_description_image_url": ""
       }
     },
     {
       "label": "channel",
-      "value": "string",
+      "value": "channel",
       "documentation": {
         "link": "https://api.myspotlight.tv/#tag/channel",
-        "input_description": "Channel Slug",
-        "input_placeholder": "Please type the channel slug",
+        "input_description": "get channel by category",
+        "input_placeholder": "?category=x&slug=x",
         "input_description_image_url": ""
       }
     },
     {
       "label": "video",
-      "value": "string",
+      "value": "video",
       "documentation": {
         "link": "https://api.myspotlight.tv/#tag/video",
-        "input_description": "Video ID",
-        "input_placeholder": "Please type the Video ID",
+        "input_description": "video id",
+        "input_placeholder": "?id=x",
         "input_description_image_url": ""
       }
     }
