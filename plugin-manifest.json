@@ -5,7 +5,7 @@
   "author_email": "matt@dotstudioz.com",
   "manifest_version": "0.9.0",
   "name": "dotstudioPRO Applicaster Provider",
-  "dependency_name": "@dotstudiopro/zapp-pipes-provider-dotstudiopro",
+  "dependency_name": "zapp-pipes-provider-dotstudiopro",
   "dependency_version": "0.9.0",
   "dependency_repository_url": [
     "https://github.com/dotstudiopro/zapp-pipes-provider-dotstudiopro"
