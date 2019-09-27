@@ -3,10 +3,10 @@
   "platform": null,
   "author_name": "dotstudiopro",
   "author_email": "matt@dotstudioz.com",
-  "manifest_version": "0.8.0",
+  "manifest_version": "0.9.0",
   "name": "dotstudioPRO Applicaster Provider",
   "dependency_name": "@dotstudiopro/zapp-pipes-provider-dotstudiopro",
-  "dependency_version": "0.7.0",
+  "dependency_version": "0.9.0",
   "dependency_repository_url": [
     "https://github.com/dotstudiopro/zapp-pipes-provider-dotstudiopro"
   ],
@@ -42,8 +42,8 @@
       "value": "channels",
       "documentation": {
         "link": "https://api.myspotlight.tv/#tag/channel",
-        "input_description": "Category Slug",
-        "input_placeholder": "my-category",
+        "input_description": "category slug",
+        "input_placeholder": "?category=x",
         "input_description_image_url": ""
       }
     },
@@ -54,16 +54,6 @@
         "link": "https://api.myspotlight.tv/#tag/channel",
         "input_description": "get channel by category",
         "input_placeholder": "?category=x&slug=x",
-        "input_description_image_url": ""
-      }
-    },
-    {
-      "label": "video",
-      "value": "video",
-      "documentation": {
-        "link": "https://api.myspotlight.tv/#tag/video",
-        "input_description": "video id",
-        "input_placeholder": "?id=x",
         "input_description_image_url": ""
       }
     }

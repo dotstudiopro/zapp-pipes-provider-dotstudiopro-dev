@@ -44,7 +44,7 @@ function parseVideo(video, params) {
                 {
                     "type": "image",
                     "key": "thumbnail",
-                    "src": "https://images.dotstudiopro.com/" + video.thumb
+                    "src": video.thumb
                 }
             ]
         }

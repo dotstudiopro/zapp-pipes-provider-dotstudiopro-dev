@@ -23,6 +23,8 @@ export const handler = nativeBridge => params => {
           params.platform = appData.platform;
           params.device_ifa = appData.advertisingIdentifier;
 
+          console.log("Production build params:", params);
+
           return commands[type](params)
             .then(nativeBridge.sendResponse)
             .catch(nativeBridge.throwError);
@@ -39,6 +41,7 @@ export const handler = nativeBridge => params => {
         params.token = authObj.token;
         params.cdn = authObj.cdn;
 
+        // dev build also missing nativeBridge.appData() method so hardcode this too
         params.deviceWidth = "1920";
         params.deviceHeight = "1080";
         params.platform = "android";

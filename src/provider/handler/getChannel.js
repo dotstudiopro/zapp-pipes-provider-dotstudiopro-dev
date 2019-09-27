@@ -3,65 +3,101 @@ import axios from 'axios';
 export default (params) => {
   const { category, slug, token } = params;
   const url = `https://api.myspotlight.tv/channels/US/${category}/${slug}?token=${token}`;
-
-  return axios.get(url).then(handleChannelResponse).catch(e => Promise.reject());
+  return axios.get(url)
+  .then((response) => {
+    console.log(response.data);
+    return handleChannelResponse(response.data, params);
+  })
+  .catch(e => Promise.reject(e));
 };
 
-function handleChannelResponse(response) {
-  const channel = response.data.channels[0];
+function handleChannelResponse(response, params) {
+  const channel = response.channels[0];
+
+  const returnObj = {
+    id: channel._id,
+    title: channel.title,
+    summary: channel.description,
+    media_group: [],
+    type: {
+      value: 'feed'
+    }
+  };
+
+  if (channel.spotlight_poster) {
+    returnObj.media_group.push({
+      "type": "image",
+      "media_item": [
+          {
+              "type": "image",
+              "key": "key_art",
+              "src": channel.spotlight_poster
+          }
+      ]
+    })
+  }
+
+  if (channel.poster) {
+    returnObj.media_group.push({
+      "type": "image",
+      "media_item": [
+          {
+              "type": "image",
+              "key": "poster",
+              "src": channel.poster
+          }
+      ]
+    })
+  }
+
+
 
   // single channel could contain one or multiple videos
   if (channel.playlist && channel.playlist.length) {
-    const videos = channel.playlist.map(video => parseVideo(video));
-
-    return {
-      id: channel._id,
-      title: channel.title,
-      type: {
-        value: 'feed'
-      },
-      entry: videos
-    };
+    const videos = channel.playlist.map(video => parseVideo(video, params));
+    returnObj.entry = videos;
+    return returnObj;
   } else {
     const parsedVideo = parseVideo(channel.video);
-    return {
-      id: channel._id,
-      title: channel.title,
-      type: {
-        value: 'feed'
-      },
-      entry: parsedVideo
-    };
+    returnObj.entry = parsedVideo;
+    return returnObj;
   }
 }
 
-function parseVideo(video) {
-    const { _id, title, description, thumb } = video;
+function parseVideo(video, params) {
+  const { _id, title, description, thumb, company_id } = video;
+  const { cdn, deviceWidth, deviceHeight, platform, device_ifa } = params;
 
-    return {
-      type: {
-        value: 'feed'
-      },
-      id: _id,
-      title,
-      summary: description,
-      media_group: [
-          {
-              "type": "image",
-              "media_item": [
-                  {
-                      "type": "image",
-                      "key": "thumbnail",
-                      "src": "https://images.dotstudiopro.com/" + thumb
-                  }
-              ]
-          }
-      ],
-      content: {
-        type: 'atom',
-        rel: 'self',
-        src: `dotstudiopro://fetchData?type=video&id=${_id}`
-      }
-    };
+  const url = `https://${cdn}/files/company/${company_id}/assets/videos/${_id}/vod/${_id}.m3u8`;
+
+  const vmap_url = `https://api.myspotlight.tv/vmap/5c745b1297f815e737ee34cf/${deviceWidth}/${deviceHeight}?device_type=${platform}&device_ifa=${device_ifa}`;
+
+  return {
+    type: {
+      value: 'video'
+    },
+    id: _id,
+    title,
+    summary: description,
+    media_group: [
+        {
+            "type": "image",
+            "media_item": [
+                {
+                    "type": "image",
+                    "key": "thumbnail",
+                    "src": "https://images.dotstudiopro.com/" + thumb
+                }
+            ]
+        }
+    ],
+    "content": {
+      "type": "video/hls",
+      "src": url 
+    },
+    "extensions": {
+      "video_ads": vmap_url
+    }
+  };
 }
 
