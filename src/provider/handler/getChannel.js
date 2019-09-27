@@ -70,7 +70,7 @@ function parseVideo(video, params) {
 
   const url = `https://${cdn}/files/company/${company_id}/assets/videos/${_id}/vod/${_id}.m3u8`;
 
-  const vmap_url = `https://api.myspotlight.tv/vmap/5c745b1297f815e737ee34cf/${deviceWidth}/${deviceHeight}?device_type=${platform}&device_ifa=${device_ifa}`;
+  const vmap_url = `https://api.myspotlight.tv/vmap/${_id}/${deviceWidth}/${deviceHeight}?device_type=${platform}&device_ifa=${device_ifa}`;
 
   return {
     type: {
