@@ -43,7 +43,7 @@ function parseVideo(video, params) {
             "media_item": [
                 {
                     "type": "image",
-                    "key": "thumbnail",
+                    "key": "image_base",
                     "src": video.thumb
                 }
             ]
