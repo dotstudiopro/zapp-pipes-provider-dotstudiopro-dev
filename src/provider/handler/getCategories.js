@@ -37,6 +37,7 @@ function parseCategory(category) {
     },
     link: {
       rel: 'self',
+      type: 'feed',
       href: `dotstudiopro://fetchData?type=channels&category=${slug}`
     }
   }
