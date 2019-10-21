@@ -59,6 +59,10 @@ function parseChannel(channel, category) {
       type: 'atom',
       rel: 'self',
       src: `dotstudiopro://fetchData?type=channel&category=${category}&slug=${slug}`
+    },
+    link: {
+      rel: 'self',
+      href: `dotstudiopro://fetchData?type=channel&category=${category}&slug=${slug}`
     }
   };
 }
@@ -86,6 +90,10 @@ function parseVideoChannel(channel) {
     "content": {
       "type": "video/hls",
       "src": `dotstudiopro://fetchData?type=video&id=${video_id}`
+    },
+    link: {
+      rel: "self",
+      href: `dotstudiopro://fetchData?type=video&id=${video_id}`
     }
   };
 }
