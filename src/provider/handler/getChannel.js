@@ -30,7 +30,7 @@ function handleChannelResponse(response, params) {
       "media_item": [
           {
               "type": "image",
-              "key": "key_art",
+              "key": "image_base",
               "src": channel.spotlight_poster
           }
       ]
@@ -68,7 +68,7 @@ function parseVideo(video, params) {
   const { _id, title, description, thumb, company_id } = video;
   const { cdn, deviceWidth, deviceHeight, platform, device_ifa } = params;
 
-  const url = `https://${cdn}/files/company/${company_id}/assets/videos/${_id}/vod/${_id}.m3u8`;
+  const url = `${cdn}/files/company/${company_id}/assets/videos/${_id}/vod/${_id}.m3u8`;
 
   const vmap_url = `https://api.myspotlight.tv/vmap/${_id}/${deviceWidth}/${deviceHeight}?device_type=${platform}&device_ifa=${device_ifa}`;
 

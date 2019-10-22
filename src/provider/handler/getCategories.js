@@ -48,7 +48,7 @@ function parseCategory(category) {
       "media_item": [
         {
           "type": "image",
-          "key": "thumbnail",
+          "key": "image_base",
           "src": category.image.poster
         }
       ]
