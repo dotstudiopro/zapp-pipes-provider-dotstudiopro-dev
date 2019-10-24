@@ -1,13 +1,44 @@
 import axios from 'axios';
 
 export default (params) => {
-  const { id, token } = params;
-  const url = `https://api.myspotlight.tv/video/play2/${id}?token=${token}`;
-  return axios.get(url)
-  .then((response) => {
-    return handleVideoResponse(response.data, params);
-  })
-  .catch(e => Promise.reject(e));
+  let { token } = params;
+  const { id, api_key } = params;
+
+  if (api_key) {
+    const auth_url = `https://api.myspotlight.tv/token?key=${api_key}`;
+
+    return axios.post(auth_url)
+    .then((response) => {
+      if (response.data && response.data.success) {
+        token = response.data.token;
+        const url = `https://api.myspotlight.tv/video/play2/${id}?token=${token}`;
+        return axios.get(url)
+      } else {
+        throw "Could not obtain access token from Spotlight API, please check your API Key";
+      }
+    })
+    .then((response) => {
+      if (response.data) {
+        return handleVideoResponse(response.data, params);
+      } else {
+        throw "Video " + id + " not found";
+      }
+    })
+    .catch(e => Promise.reject(e));
+  } else if (token) {
+    const url = `https://api.myspotlight.tv/video/play2/${id}?token=${token}`;
+    return axios.get(url)
+    .then((response) => {
+      if (response.data) {
+        return handleVideoResponse(response.data, params);
+      } else {
+        throw "Video " + id + " not found";
+      }
+    })
+    .catch(e => Promise.reject(e));
+  } else {
+    Promise.reject("One of either API Key in query or Access Token in local storage is required")
+  }
 };
 
 function handleVideoResponse(response, params) {

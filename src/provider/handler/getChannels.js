@@ -1,17 +1,50 @@
 import axios from 'axios';
 
 export default (params) => {
-  const { category , token } = params;
-  const url = `https://api.myspotlight.tv/channels/US/${category}?token=${token}`;
-  return axios.get(url)
-  .then((response) => {
-    return handleChannelsResponse(response.data, category);
-  })
-  .catch(e => Promise.reject(e));
+  let { token } = params;
+  const { api_key, category } = params;
+
+  if (api_key) {
+    const auth_url = `https://api.myspotlight.tv/token?key=${api_key}`;
+
+    return axios.post(auth_url)
+    .then((response) => {
+      if (response.data && response.data.success) {
+        token = response.data.token;
+        const url = `https://api.myspotlight.tv/channels/US/${category}?token=${token}`;
+        return axios.get(url)
+      } else {
+        throw "Could not obtain access token from Spotlight API, please check your API Key";
+      }
+    })
+    .then((response) => {
+      const { channels } = response.data;
+      if (channels) {
+        return handleChannelsResponse(channels, category);
+      } else {
+        throw "No channels found in category " + category;
+      }
+    })
+    .catch(e => Promise.reject(e));
+  } else if (token) {
+    const url = `https://api.myspotlight.tv/channels/US/${category}?token=${token}`;
+    return axios.get(url)
+    .then((response) => {
+      const { channels } = response.data;
+      if (channels) {
+        return handleChannelsResponse(channels, category);
+      } else {
+        throw "No channels found in category " + category;
+      }
+    })
+    .catch(e => Promise.reject(e));
+  } else {
+    Promise.reject("One of either API Key in query or Access Token in local storage is required")
+  }
 };
 
 function handleChannelsResponse(response, category) {
-  const channels = response.channels.map(channel => {
+  const channels = response.map(channel => {
 
     if (channel.childchannels.length) {
       // case 1 - parent so need to get children individually

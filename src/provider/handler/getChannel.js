@@ -1,18 +1,50 @@
 import axios from 'axios';
 
 export default (params) => {
-  const { category, slug, token } = params;
-  const url = `https://api.myspotlight.tv/channels/US/${category}/${slug}?token=${token}`;
-  return axios.get(url)
-  .then((response) => {
-    console.log(response.data);
-    return handleChannelResponse(response.data, params);
-  })
-  .catch(e => Promise.reject(e));
+  let { token } = params;
+  const { category, slug, api_key } = params;
+
+  if (api_key) {
+    const auth_url = `https://api.myspotlight.tv/token?key=${api_key}`;
+
+    return axios.post(auth_url)
+    .then((response) => {
+      if (response.data && response.data.success) {
+        token = response.data.token;
+        const url = `https://api.myspotlight.tv/channels/US/${category}/${slug}?token=${token}`;
+        return axios.get(url)
+      } else {
+        throw "Could not obtain access token from Spotlight API, please check your API Key";
+      }
+    })
+    .then((response) => {
+      const { channels } = response.data;
+      if (channels) {
+        return handleChannelResponse(channels, params);
+      } else {
+        throw "No channels found in category " + category;
+      }
+    })
+    .catch(e => Promise.reject(e));
+  } else if (token) {
+    const url = `https://api.myspotlight.tv/channels/US/${category}/${slug}?token=${token}`;
+    return axios.get(url)
+    .then((response) => {
+      const { channels } = response.data;
+      if (channels) {
+        return handleChannelResponse(channels, params);
+      } else {
+        throw "No channels found in category " + category;
+      }
+    })
+    .catch(e => Promise.reject(e));
+  } else {
+    Promise.reject("One of either API Key in query or Access Token in local storage is required")
+  }
 };
 
 function handleChannelResponse(response, params) {
-  const channel = response.channels[0];
+  const channel = response[0];
 
   const returnObj = {
     id: channel._id,
@@ -49,7 +81,6 @@ function handleChannelResponse(response, params) {
       ]
     })
   }
-
 
 
   // single channel could contain one or multiple videos
