@@ -1,63 +1,72 @@
 import axios from 'axios';
 
 export default (params) => {
-  let { token } = params;
-  const { api_key, category } = params;
+  let {
+    token
+  } = params;
+  const {
+    api_key,
+    category
+  } = params;
 
   if (api_key) {
     const auth_url = `https://api.myspotlight.tv/token?key=${api_key}`;
-
     return axios.post(auth_url)
-    .then((response) => {
-      if (response.data && response.data.success) {
-        token = response.data.token;
-        const url = `https://api.myspotlight.tv/channels/US/${category}?token=${token}`;
-        return axios.get(url)
-      } else {
-        throw "Could not obtain access token from Spotlight API, please check your API Key";
-      }
-    })
-    .then((response) => {
-      const { channels } = response.data;
-      if (channels) {
-        return handleChannelsResponse(channels, category);
-      } else {
-        throw "No channels found in category " + category;
-      }
-    })
-    .catch(e => Promise.reject(e));
+      .then((response) => {
+        if (response.data && response.data.success) {
+          token = response.data.token;
+          const url = `https://api.myspotlight.tv/channels/US/${category}?token=${token}`;
+          return axios.get(url)
+        } else {
+          throw "Could not obtain access token from Spotlight API, please check your API Key";
+        }
+      })
+      .then((response) => {
+        const {
+          channels
+        } = response.data;
+        if (channels) {
+          console.log("JSON ", JSON.stringify(handleChannelsResponse(channels, category)))
+          return handleChannelsResponse(channels, category);
+        } else {
+          throw "No channels found in category " + category;
+        }
+      })
+      .catch(e => Promise.reject(e));
   } else if (token) {
     const url = `https://api.myspotlight.tv/channels/US/${category}?token=${token}`;
     return axios.get(url)
-    .then((response) => {
-      const { channels } = response.data;
-      if (channels) {
-        return handleChannelsResponse(channels, category);
-      } else {
-        throw "No channels found in category " + category;
-      }
-    })
-    .catch(e => Promise.reject(e));
+      .then((response) => {
+        const {
+          channels
+        } = response.data;
+        if (channels) {
+          return handleChannelsResponse(channels, category);
+        } else {
+          throw "No channels found in category " + category;
+        }
+      })
+      .catch(e => Promise.reject(e));
   } else {
     Promise.reject("One of either API Key in query or Access Token in local storage is required")
   }
 };
 
 function handleChannelsResponse(response, category) {
-  const channels = response.map(channel => {
+  const channels = [];
 
+  response.forEach(channel => {
     if (channel.childchannels.length) {
       // case 1 - parent so need to get children individually
       channel.childchannels.forEach((child) => {
-        return parseChannel(child, category);
+        channels.push(parseChannel(child, category));
       })
     } else if (channel.playlist.length) {
       // case 2 - channel with a playlist
-      return parseChannel(channel, category);
+      channels.push(parseChannel(channel, category));
     } else if (channel.video) {
-      return parseVideoChannel(channel);
+      channels.push(parseVideoChannel(channel));
     }
-    
   })
 
   return {
@@ -71,7 +80,11 @@ function handleChannelsResponse(response, category) {
 }
 
 function parseChannel(channel, category) {
-  const { _id, title, slug } = channel;
+  const {
+    _id,
+    title,
+    slug
+  } = channel;
 
   return {
     type: {
@@ -80,12 +93,12 @@ function parseChannel(channel, category) {
     id: _id,
     title,
     media_group: [{
-        type: 'image',
-        media_item: [{
-          src: channel.spotlight_poster || channel.poster,
-          key: 'image_base',
-          type: 'image'
-        }]
+      type: 'image',
+      media_item: [{
+        src: channel.spotlight_poster || channel.poster,
+        key: 'image_base',
+        type: 'image'
+      }]
     }],
     extensions: {},
     content: {
@@ -102,7 +115,11 @@ function parseChannel(channel, category) {
 }
 
 function parseVideoChannel(channel) {
-  const { _id, title, description } = channel;
+  const {
+    _id,
+    title,
+    description
+  } = channel;
   const video_id = channel.video._id;
 
   return {
@@ -113,12 +130,12 @@ function parseVideoChannel(channel) {
     title,
     summary: description,
     media_group: [{
-        type: 'image',
-        media_item: [{
-          src: channel.spotlight_poster || channel.poster,
-          key: 'image_base',
-          type: 'image'
-        }]
+      type: 'image',
+      media_item: [{
+        src: channel.spotlight_poster || channel.poster,
+        key: 'image_base',
+        type: 'image'
+      }]
     }],
     extensions: {},
     "content": {
@@ -131,4 +148,3 @@ function parseVideoChannel(channel) {
     }
   };
 }
-

@@ -1,43 +1,53 @@
 import axios from 'axios';
 
 export default (params) => {
-  let { token } = params;
-  const { category, slug, api_key } = params;
+  let {
+    token
+  } = params;
+  const {
+    category,
+    slug,
+    api_key
+  } = params;
 
   if (api_key) {
     const auth_url = `https://api.myspotlight.tv/token?key=${api_key}`;
 
     return axios.post(auth_url)
-    .then((response) => {
-      if (response.data && response.data.success) {
-        token = response.data.token;
-        const url = `https://api.myspotlight.tv/channels/US/${category}/${slug}?token=${token}`;
-        return axios.get(url)
-      } else {
-        throw "Could not obtain access token from Spotlight API, please check your API Key";
-      }
-    })
-    .then((response) => {
-      const { channels } = response.data;
-      if (channels) {
-        return handleChannelResponse(channels, params);
-      } else {
-        throw "No channels found in category " + category;
-      }
-    })
-    .catch(e => Promise.reject(e));
+      .then((response) => {
+        if (response.data && response.data.success) {
+          token = response.data.token;
+          const url = `https://api.myspotlight.tv/channels/US/${category}/${slug}?token=${token}`;
+          return axios.get(url)
+        } else {
+          throw "Could not obtain access token from Spotlight API, please check your API Key";
+        }
+      })
+      .then((response) => {
+        const {
+          channels
+        } = response.data;
+        if (channels) {
+          return handleChannelResponse(channels, params);
+        } else {
+          throw "No channels found in category " + category;
+        }
+      })
+      .catch(e => Promise.reject(e));
   } else if (token) {
-    const url = `https://api.myspotlight.tv/channels/US/${category}/${slug}?token=${token}`;
+    const url = `https://api.myspotlight.tv/channel/US/${slug}?token=${token}`;
     return axios.get(url)
-    .then((response) => {
-      const { channels } = response.data;
-      if (channels) {
-        return handleChannelResponse(channels, params);
-      } else {
-        throw "No channels found in category " + category;
-      }
-    })
-    .catch(e => Promise.reject(e));
+      .then((response) => {
+        const {
+          channels
+        } = response.data;
+        if (channels) {
+          return handleChannelResponse(channels, params);
+        } else {
+          throw "No channels found in category " + category;
+        }
+      })
+      .catch(e => Promise.reject(e));
   } else {
     Promise.reject("One of either API Key in query or Access Token in local storage is required")
   }
@@ -46,10 +56,18 @@ export default (params) => {
 function handleChannelResponse(response, params) {
   const channel = response[0];
 
+  const {
+    _id,
+    title,
+    description,
+    spotlight_poster,
+    poster
+  } = channel;
+
   const returnObj = {
-    id: channel._id,
-    title: channel.title,
-    summary: channel.description,
+    id: _id,
+    title: title,
+    summary: description,
     media_group: [],
     type: {
       value: 'feed'
@@ -59,26 +77,22 @@ function handleChannelResponse(response, params) {
   if (channel.spotlight_poster) {
     returnObj.media_group.push({
       "type": "image",
-      "media_item": [
-          {
-              "type": "image",
-              "key": "image_base",
-              "src": channel.spotlight_poster
-          }
-      ]
+      "media_item": [{
+        "type": "image",
+        "key": "image_base",
+        "src": spotlight_poster
+      }]
     })
   }
 
-  if (channel.poster) {
+  if (poster) {
     returnObj.media_group.push({
       "type": "image",
-      "media_item": [
-          {
-              "type": "image",
-              "key": "poster",
-              "src": channel.poster
-          }
-      ]
+      "media_item": [{
+        "type": "image",
+        "key": "poster",
+        "src": poster
+      }]
     })
   }
 
@@ -96,8 +110,20 @@ function handleChannelResponse(response, params) {
 }
 
 function parseVideo(video, params) {
-  const { _id, title, description, thumb, company_id } = video;
-  const { cdn, deviceWidth, deviceHeight, platform, device_ifa } = params;
+  const {
+    _id,
+    title,
+    description,
+    thumb,
+    company_id
+  } = video;
+  const {
+    cdn,
+    deviceWidth,
+    deviceHeight,
+    platform,
+    device_ifa
+  } = params;
 
   const url = `${cdn}/files/company/${company_id}/assets/videos/${_id}/vod/${_id}.m3u8`;
 
@@ -110,25 +136,20 @@ function parseVideo(video, params) {
     id: _id,
     title,
     summary: description,
-    media_group: [
-        {
-            "type": "image",
-            "media_item": [
-                {
-                    "type": "image",
-                    "key": "image_base",
-                    "src": "https://images.dotstudiopro.com/" + thumb
-                }
-            ]
-        }
-    ],
+    media_group: [{
+      "type": "image",
+      "media_item": [{
+        "type": "image",
+        "key": "image_base",
+        "src": "https://images.dotstudiopro.com/" + thumb
+      }]
+    }],
     "content": {
       "type": "video/hls",
-      "src": url 
+      "src": url
     },
     "extensions": {
       "video_ads": vmap_url
     }
   };
 }
-
