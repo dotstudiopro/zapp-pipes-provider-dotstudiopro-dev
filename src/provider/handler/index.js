@@ -24,6 +24,9 @@ export const handler = nativeBridge => params => {
           console.log("authObj", authObj);
           params.token = authObj.token;
           params.cdn = authObj.cdn;
+          if (params.cdn.indexOf("https://") === -1){
+            params.cdn = "https://" + params.cdn;
+          }
 
           const appData = nativeBridge.appData();
           params.deviceWidth = appData.deviceWidth;
@@ -51,6 +54,9 @@ export const handler = nativeBridge => params => {
       .then(authObj => {
         params.token = authObj.token;
         params.cdn = authObj.cdn;
+        if (params.cdn.indexOf("https://") === -1){
+          params.cdn = "https://" + params.cdn;
+        }
 
         // dev build also missing nativeBridge.appData() method so hardcode this too
         params.deviceWidth = "1920";
