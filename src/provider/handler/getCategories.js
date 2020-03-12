@@ -1,12 +1,8 @@
 import axios from 'axios';
 
 export default (params) => {
-  let {
-    token
-  } = params;
-  const {
-    api_key
-  } = params;
+  let { token } = params;
+  const { api_key } = params;
 
   if (api_key) {
     const auth_url = `https://api.myspotlight.tv/token?key=${api_key}`;

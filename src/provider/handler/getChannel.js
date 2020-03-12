@@ -4,8 +4,6 @@ export default params => {
   let { token } = params;
   const { category, slug, api_key } = params;
 
-  console.log(" getting channel ");
-
   if (api_key) {
     const auth_url = `https://api.myspotlight.tv/token?key=${api_key}`;
 
@@ -29,7 +27,7 @@ export default params => {
         }
       })
       .catch(e => {
-        console.log("oups, error in request");
+        console.log("Error in request ", e);
         Promise.reject(e);
       });
   } else if (token) {
@@ -99,7 +97,7 @@ function handleChannelResponse(response, params) {
     returnObj.entry = videos;
     return returnObj;
   } else {
-    const parsedVideo = parseVideo(channel.video);
+    const parsedVideo = parseVideo(channel.video, params);
     returnObj.entry = parsedVideo;
     return returnObj;
   }
@@ -107,11 +105,41 @@ function handleChannelResponse(response, params) {
 
 function parseVideo(video, params) {
   const { _id, title, description, thumb, company_id } = video;
-  const { cdn, deviceWidth, deviceHeight, platform, device_ifa } = params;
+  const { cdn } = params;
+
+  const video_ads = [];
+
+  // calculate advertising array if video has ads
+  if (video.ads) {
+    const { android_ad_tag, ios_ad_tag, platform } = params;
+
+    const ad_tag = platform === "android" ? android_ad_tag : ios_ad_tag;
+
+    if (video.ads.pre && video.ads.pre === "yes") {
+      video_ads.push({
+        "offset": "preroll",
+        "ad_url": `${ad_tag}`
+      })
+    }
+
+    if (video.ads.mid_offset && video.ads.mid_offset.offsets && video.ads.mid_offset.offsets.linear && video.ads.mid_offset.offsets.linear.length > 0) {
+      video.ads.mid_offset.offsets.linear.map((offset) => {
+        video_ads.push({
+          "offset": parseInt(offset),
+          "ad_url": `${ad_tag}`
+        })
+      });
+    }
+
+    if (video.ads.post && video.ads.post === "yes") {
+      video_ads.push({
+        "offset": "postroll",
+        "ad_url": `${ad_tag}`
+      })
+    }
+  }
 
   const url = `${cdn}/files/company/${company_id}/assets/videos/${_id}/vod/${_id}.m3u8`;
-
-  const vmap_url = `https://api.myspotlight.tv/vmap/${_id}/${deviceWidth}/${deviceHeight}?device_type=${platform}&device_ifa=${device_ifa}`;
 
   return {
     type: {
@@ -137,7 +165,8 @@ function parseVideo(video, params) {
       src: url
     },
     extensions: {
-      video_ads: vmap_url
+      video_ads: video_ads
     }
   };
+
 }

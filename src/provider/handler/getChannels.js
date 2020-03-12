@@ -1,13 +1,8 @@
 import axios from 'axios';
 
 export default (params) => {
-  let {
-    token
-  } = params;
-  const {
-    api_key,
-    category
-  } = params;
+  let { token } = params;
+  const { api_key, category } = params;
 
   if (api_key) {
     const auth_url = `https://api.myspotlight.tv/token?key=${api_key}`;
@@ -22,11 +17,8 @@ export default (params) => {
         }
       })
       .then((response) => {
-        const {
-          channels
-        } = response.data;
+        const { channels } = response.data;
         if (channels) {
-          console.log("JSON ", JSON.stringify(handleChannelsResponse(channels, category)))
           return handleChannelsResponse(channels, category);
         } else {
           throw "No channels found in category " + category;

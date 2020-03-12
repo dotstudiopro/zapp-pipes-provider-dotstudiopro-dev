@@ -2,7 +2,6 @@ import { commands } from "./commands";
 import { authenticate, safeJsonParse, getApiKey } from "./utils";
 
 export const handler = nativeBridge => params => {
-  console.log("calling handler");
   // console.log("handler", { params, type, nativeBridge });
   const { type } = params;
 
@@ -32,7 +31,9 @@ export const handler = nativeBridge => params => {
           params.deviceWidth = appData.deviceWidth;
           params.deviceHeight = appData.deviceHeight;
           params.platform = appData.platform;
-          params.device_ifa = appData.advertisingIdentifier;
+          params.deviceType = appData.deviceType;
+          params.android_ad_tag = appData.android_ad_tag;
+          params.ios_ad_tag = appData.ios_ad_tag;
 
           console.log("Production build params:", params);
 
@@ -62,7 +63,9 @@ export const handler = nativeBridge => params => {
         params.deviceWidth = "1920";
         params.deviceHeight = "1080";
         params.platform = "android";
-        params.device_ifa = "38400000-8cf0-11bd-b23e-10b96e40000d";
+        params.deviceType = "phone";
+        params.android_ad_tag = "http://adserver.dotstudiopro.com/adserver/www/delivery/fc.php?script=apVideo:vast2&zoneid=1152&cb=15031039373734338&mp4=true";
+        params.ios_ad_tag = "http://adserver.dotstudiopro.com/adserver/www/delivery/fc.php?script=apVideo:vast2&zoneid=1152&cb=15031039373734338&mp4=true";
 
         return commands[type](params)
           .then(nativeBridge.sendResponse)

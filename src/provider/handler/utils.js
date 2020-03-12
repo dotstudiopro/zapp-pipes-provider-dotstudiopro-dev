@@ -54,10 +54,13 @@ var authenticate = function(nativeBridge, api_key) {
         getAccessToken(api_key, function(err, authObj) {
           if (err) reject(err);
 
-          const { token, expires, cdn } = authObj;
-          nativeBridge.setLocalStoreItem("token", token, "dotstudiopro");
+          const { token, expires, cdn, android_ad_tag, ios_ad_tag } = authObj;
+          nativeBridge.setLocalStoreItem("api_key", api_key, "dotstudiopro");
+          nativeBridge.setLocalStoreItem("token", token, "dotstudiopro"); //x-access-token
           nativeBridge.setLocalStoreItem("expiry", expires, "dotstudiopro");
           nativeBridge.setLocalStoreItem("cdn", cdn, "dotstudiopro");
+          nativeBridge.setLocalStoreItem("android_ad_tag", android_ad_tag, "dotstudiopro");
+          nativeBridge.setLocalStoreItem("ios_ad_tag", ios_ad_tag, "dotstudiopro");
 
           resolve(authObj);
         });
@@ -71,10 +74,13 @@ var authenticate = function(nativeBridge, api_key) {
       getAccessToken(api_key, function(err, authObj) {
         if (err) return reject(err);
 
-        const { token, expires, cdn } = authObj;
+        const { token, expires, cdn, android_ad_tag, ios_ad_tag } = authObj;
+        nativeBridge.setLocalStoreItem("api_key", api_key, "dotstudiopro");
         nativeBridge.setLocalStoreItem("token", token, "dotstudiopro");
         nativeBridge.setLocalStoreItem("expiry", expires, "dotstudiopro");
         nativeBridge.setLocalStoreItem("cdn", cdn, "dotstudiopro");
+        nativeBridge.setLocalStoreItem("android_ad_tag", android_ad_tag, "dotstudiopro");
+        nativeBridge.setLocalStoreItem("ios_ad_tag", ios_ad_tag, "dotstudiopro");
 
         resolve(authObj);
       });
@@ -85,7 +91,7 @@ var authenticate = function(nativeBridge, api_key) {
 // Acquires an access token and company CDN value from Spotlight API
 function getAccessToken(api_key, cb) {
   const returnObj = {};
-  console.log("calling post on auth", api_key);
+  // console.log("calling post on auth", api_key);
 
   axios
     .post("https://api.myspotlight.tv/token", { key: api_key })
@@ -97,7 +103,7 @@ function getAccessToken(api_key, cb) {
         var decoded = jwt.decode(token);
         returnObj.expires = decoded.expires;
         return axios.get(
-          `https://api.myspotlight.tv/companies/analytics/config?token=${token}`
+          `https://api.myspotlight.tv/companies/applicaster-config?token=${token}`
         );
       } else {
         return cb("Cannot obtain access token from Spotlight API", null);
@@ -105,6 +111,8 @@ function getAccessToken(api_key, cb) {
     })
     .then(response => {
       returnObj.cdn = response.data.custom_cdn;
+      returnObj.android_ad_tag = response.data.applicaster_tags.android || "";
+      returnObj.ios_ad_tag = response.data.applicaster_tags.ios || "";
       return cb(null, returnObj);
     })
     .catch(function(error) {
