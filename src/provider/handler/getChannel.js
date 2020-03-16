@@ -125,7 +125,7 @@ function parseVideo(video, params) {
     if (video.ads.mid_offset && video.ads.mid_offset.offsets && video.ads.mid_offset.offsets.linear && video.ads.mid_offset.offsets.linear.length > 0) {
       video.ads.mid_offset.offsets.linear.map((offset) => {
         video_ads.push({
-          "offset": parseInt(offset),
+          "offset": parseInt(offset).toString(),
           "ad_url": `${ad_tag}`
         })
       });
