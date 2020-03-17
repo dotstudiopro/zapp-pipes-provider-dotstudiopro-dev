@@ -5,10 +5,10 @@
   "author_email": "matt@dotstudioz.com",
   "manifest_version": "0.1.0",
   "name": "dotstudioPRO Applicaster Provider",
-  "dependency_name": "zapp-pipes-provider-dotstudiopro",
-  "dependency_version": "0.11.0",
+  "dependency_name": "zapp-pipes-provider-dotstudiopro-dev",
+  "dependency_version": "0.1.0",
   "dependency_repository_url": [
-    "https://github.com/dotstudiopro/zapp-pipes-provider-dotstudiopro"
+    "https://github.com/dotstudiopro/zapp-pipes-provider-dotstudiopro-dev"
   ],
   "description": "Zapp Provider for Applicaster platform by dotstudioPRO",
   "type": "data_source_provider",
