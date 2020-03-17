@@ -1,7 +1,7 @@
 {
-  "name": "zapp-pipes-provider-dotstudiopro",
-  "version": "0.23.0",
-  "description": "Zapp Provider for Applicaster platform by dotstudioPRO",
+  "name": "zapp-pipes-provider-dotstudiopro-dev",
+  "version": "0.0.1",
+  "description": "DEV Version - Zapp Provider for Applicaster platform by dotstudioPRO",
   "main": "lib/index.js",
   "scripts": {
     "test": "node_modules/.bin/jest",
@@ -11,22 +11,9 @@
     "build": "rm -rf lib && NODE_ENV=production node_modules/.bin/babel src -d lib",
     "prepublish": "npm run build"
   },
-  "repository": {
-    "url": "git+ssh://git@github.com/dotstudiopro/zapp-pipes-provider-dotstudiopro.git",
-    "type": "git"
+  "directories": {
+    "lib": "lib"
   },
-  "keywords": [
-    "applicaster",
-    "datasource",
-    "zapp-pipes",
-    "dotstudiopro"
-  ],
-  "author": "dotstudioPRO",
-  "license": "UNLICENSED",
-  "bugs": {
-    "url": "https://github.com/dotstudiopro/zapp-pipes-provider-dotstudiopro/issues"
-  },
-  "homepage": "https://github.com/dotstudiopro/zapp-pipes-provider-dotstudiopro#readme",
   "dependencies": {
     "axios": "0.16.2",
     "jsonwebtoken": "^8.5.1",
@@ -64,5 +51,15 @@
       "packages/**/*.js"
     ],
     "testEnvironment": "node"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dotstudiopro/zapp-pipes-provider-dotstudiopro-dev.git"
+  },
+  "author": "dotstudioPRO",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/dotstudiopro/zapp-pipes-provider-dotstudiopro-dev/issues"
+  },
+  "homepage": "https://github.com/dotstudiopro/zapp-pipes-provider-dotstudiopro-dev#readme"
 }
